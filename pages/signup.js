@@ -3,6 +3,8 @@ import { useState } from 'react'
 import axios from 'axios'
 import { useRouter } from 'next/router'
 
+const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
+
 export default function Signup() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
@@ -11,7 +13,7 @@ export default function Signup() {
 
   const handleSignup = async () => {
     try {
-      await axios.post('http://localhost:8000/auth/signup', null, {
+      await axios.post(`${backendUrl}/auth/signup`, null, {
         params: { email, password }
       })
       router.push('/login')

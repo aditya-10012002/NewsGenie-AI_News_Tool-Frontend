@@ -4,6 +4,8 @@ import axios from 'axios'
 import { jwtDecode } from 'jwt-decode'
 import { useRouter } from 'next/router'
 
+const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
+
 export default function NewsCard({ _id, title, summary, url, isFavorited, handleRemove }) {
     const [saved, setSaved] = useState(isFavorited)
     const router = useRouter()
@@ -19,7 +21,7 @@ export default function NewsCard({ _id, title, summary, url, isFavorited, handle
         const userId = decoded.sub
   
         if (!saved) {
-          await axios.post(`http://localhost:8000/favorites/add?user_id=${userId}&article_id=${_id}`, null, {
+          await axios.post(`${backendUrl}/favorites/add?user_id=${userId}&article_id=${_id}`, null, {
             headers: { Authorization: `Bearer ${token}` }
           })
           setSaved(true)
@@ -29,7 +31,7 @@ export default function NewsCard({ _id, title, summary, url, isFavorited, handle
             handleRemove(_id)
           } else {
             // Normal remove flow
-            await axios.post(`http://localhost:8000/favorites/remove?user_id=${userId}&article_id=${_id}`, null, {
+            await axios.post(`${backendUrl}/favorites/remove?user_id=${userId}&article_id=${_id}`, null, {
               headers: { Authorization: `Bearer ${token}` }
             })
             setSaved(false)

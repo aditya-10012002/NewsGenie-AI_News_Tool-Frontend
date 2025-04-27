@@ -3,6 +3,8 @@ import { useEffect, useState } from 'react'
 import axios from 'axios'
 import { useRouter } from 'next/router'
 
+const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
+
 export default function Profile() {
   const [user, setUser] = useState(null)
   const [error, setError] = useState("")
@@ -17,7 +19,7 @@ export default function Profile() {
           return
         }
 
-        const response = await axios.get('http://localhost:8000/auth/me', {
+        const response = await axios.get(`${backendUrl}/auth/me`, {
           headers: { Authorization: `Bearer ${token}` }
         })
         setUser(response.data)

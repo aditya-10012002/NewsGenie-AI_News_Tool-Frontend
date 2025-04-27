@@ -5,6 +5,8 @@ import axios from 'axios'
 import { jwtDecode } from 'jwt-decode'
 import { useRouter } from 'next/router'
 
+const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
+
 export default function Home() {
   const [articles, setArticles] = useState([])
   const [favorites, setFavorites] = useState([])
@@ -15,13 +17,13 @@ export default function Home() {
       try {
         const token = localStorage.getItem("token")
 
-        const articlesResponse = await axios.get('http://localhost:8000/news/get-all')
+        const articlesResponse = await axios.get(`${backendUrl}/news/get-all`)
 
         if (token) {
           const decoded = jwtDecode(token)
           const userId = decoded.sub
 
-          const favoritesResponse = await axios.get(`http://localhost:8000/favorites/get?user_id=${userId}`, {
+          const favoritesResponse = await axios.get(`${backendUrl}/favorites/get?user_id=${userId}`, {
             headers: { Authorization: `Bearer ${token}` }
           })
 

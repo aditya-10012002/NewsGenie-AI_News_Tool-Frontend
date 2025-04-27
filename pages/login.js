@@ -3,6 +3,8 @@ import { useState } from 'react'
 import axios from 'axios'
 import { useRouter } from 'next/router'
 
+const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
+
 export default function Login() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
@@ -11,7 +13,7 @@ export default function Login() {
 
   const handleLogin = async () => {
     try {
-      const response = await axios.post('http://localhost:8000/auth/login', null, {
+      const response = await axios.post(`${backendUrl}/auth/login`, null, {
         params: { email, password }
       })
       localStorage.setItem("token", response.data.access_token)

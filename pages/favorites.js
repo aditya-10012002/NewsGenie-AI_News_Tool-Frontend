@@ -5,6 +5,8 @@ import axios from 'axios'
 import { jwtDecode } from 'jwt-decode'
 import { useRouter } from 'next/router'
 
+const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
+
 export default function Favorites() {
   const [favorites, setFavorites] = useState([])
   const router = useRouter()

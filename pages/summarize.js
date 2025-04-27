@@ -2,6 +2,8 @@ import Navbar from '../components/Navbar'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 
+const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
+
 export default function Summarize() {
   const [articles, setArticles] = useState([])
   const [selectedArticle, setSelectedArticle] = useState("")
@@ -12,7 +14,7 @@ export default function Summarize() {
   useEffect(() => {
     async function fetchArticles() {
       try {
-        const response = await axios.get('http://localhost:8000/news/get-all')
+        const response = await axios.get(`${backendUrl}/news/get-all`)
         setArticles(response.data.articles || [])
       } catch (error) {
         console.error('Error fetching articles:', error)
@@ -31,7 +33,7 @@ export default function Summarize() {
     try {
       const articleId = articles.find(article => article.title === selectedArticle)._id
       const response = await axios.post(
-        `http://localhost:8000/custom-summary/summarize-style?article_id=${articleId}&style=${style}`
+        `${backendUrl}/custom-summary/summarize-style?article_id=${articleId}&style=${style}`
       )
       setSummary(response.data.summary_in_style)
     } catch (error) {

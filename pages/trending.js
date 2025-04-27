@@ -3,12 +3,14 @@ import TrendingCard from '../components/TrendingCard'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 
+const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
+
 export default function Trending() {
   const [topics, setTopics] = useState([])
 
   useEffect(() => {
     async function fetchTrending() {
-      const response = await axios.get('http://localhost:8000/trending/detect')
+      const response = await axios.get(`${backendUrl}/trending/detect`)
       setTopics(response.data.trending_topics)
     }
     fetchTrending()
