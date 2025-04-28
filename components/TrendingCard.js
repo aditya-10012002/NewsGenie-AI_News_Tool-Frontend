@@ -10,7 +10,7 @@ export default function TrendingCard({ keyword, articles }) {
         <ul className="trending-articles">
           {articles.map((article, idx) => (
             <li key={idx} className="">
-              <Link href={article.url} target="_blank" className="trending-articles-link">
+              <Link href={article.url} target="_blank" className="text-decoration-none trending-articles-link">
                 {article.title}
               </Link>
             </li>
