@@ -4,16 +4,20 @@ import { useEffect, useState } from 'react'
 import axios from 'axios'
 import { jwtDecode } from 'jwt-decode'
 import { useRouter } from 'next/router'
+import ProtectedRoute from '@/components/ProtectedRoute'
+import Loader from '@/components/Loader'
 
 const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 export default function Home() {
   const [articles, setArticles] = useState([])
   const [favorites, setFavorites] = useState([])
+  const [loading, setLoading] = useState(false);
   const router = useRouter()
 
   useEffect(() => {
     async function fetchNewsAndFavorites() {
+      setLoading(true);
       try {
         const token = localStorage.getItem("token")
 
@@ -34,15 +38,19 @@ export default function Home() {
       } catch (error) {
         console.error('Error fetching news or favorites:', error)
       }
+      setLoading(false);
     }
     fetchNewsAndFavorites()
-  }, [router])
+  }, [router]);
+
+  // if (loading) return <Loader />;
 
   return (
-    <div>
+    <ProtectedRoute>
       <Navbar />
       <main className="container mt-4">
         <h1 className="mb-4">Today's Summarized News 📰</h1>
+        {loading && <Loader />}
         <div>
           {articles.map((article) => (
             <NewsCard
@@ -56,6 +64,6 @@ export default function Home() {
           ))}
         </div>
       </main>
-    </div>
+    </ProtectedRoute>
   )
 }

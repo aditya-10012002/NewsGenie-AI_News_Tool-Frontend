@@ -2,16 +2,19 @@ import Navbar from '../components/Navbar'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import { useRouter } from 'next/router'
+import Loader from '@/components/Loader';
 
 const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 export default function Profile() {
   const [user, setUser] = useState(null)
   const [error, setError] = useState("")
+  const [loading, setLoading] = useState(false);
   const router = useRouter()
 
   useEffect(() => {
     async function fetchProfile() {
+      setLoading(true);
       try {
         const token = localStorage.getItem("token")
         if (!token) {
@@ -34,14 +37,18 @@ export default function Profile() {
           setError("Something went wrong. Please try again later.")
         }
       }
+      setLoading(false);
     }
     fetchProfile()
   }, [router])
+
+  // if (loading) return <Loader />;
 
   if (error) {
     return (
       <div>
         <Navbar />
+        {loading && <Loader />}
         <main className="container mt-4">
           <p className="">{error}</p>
         </main>
@@ -55,6 +62,7 @@ export default function Profile() {
         <Navbar />
         <main className="container mt-4">
           <p>Loading profile...</p>
+          {loading && <Loader />}
         </main>
       </div>
     )
@@ -65,6 +73,7 @@ export default function Profile() {
       <Navbar />
       <main className="container mt-4">
         <h1 className="mb-4">👤 Your Profile</h1>
+        {loading && <Loader />}
         <div className="p-2">
           <p><strong>Email:</strong> {user.email}</p>
           <p><strong>Favorites Saved:</strong> {user.favorites_count}</p>

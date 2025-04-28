@@ -1,6 +1,8 @@
 import Navbar from '../components/Navbar'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
+import ProtectedRoute from '@/components/ProtectedRoute';
+import Loader from '@/components/Loader';
 
 const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 
@@ -13,12 +15,14 @@ export default function Summarize() {
 
   useEffect(() => {
     async function fetchArticles() {
+      setLoading(true);
       try {
         const response = await axios.get(`${backendUrl}/news/get-all`)
         setArticles(response.data.articles || [])
       } catch (error) {
         console.error('Error fetching articles:', error)
       }
+      setLoading(false)
     }
     fetchArticles()
   }, [])
@@ -43,16 +47,21 @@ export default function Summarize() {
     setLoading(false)
   }
 
-  return (
-    <div>
-      <Navbar />
-      <main className="container mt-4">
-        <h1 className="mb-4">🎨 Custom Summarizer</h1>
+  // if (loading) return <Loader />
 
-        <div className="mb-4">
-          <label className="block mb-2 font-semibold">Select an Article:</label>
+  return (
+    <ProtectedRoute>
+  <Navbar />
+  <main className="container mt-4">
+    <h1 className="mb-4">🎨 Custom Summarizer</h1>
+    {loading && <Loader />}
+
+    <div className="row">
+      <div className="col-lg-6 col-md-8 col-sm-12">
+        <div className="mb-3">
+          <label className="form-label fw-semibold">Select an Article:</label>
           <select
-            className="border rounded p-2 w-full mb-4"
+            className="form-select"
             value={selectedArticle}
             onChange={(e) => setSelectedArticle(e.target.value)}
           >
@@ -63,10 +72,12 @@ export default function Summarize() {
               </option>
             ))}
           </select>
+        </div>
 
-          <label className="block mb-2 font-semibold">Select Style:</label>
+        <div className="mb-3">
+          <label className="form-label fw-semibold">Select Style:</label>
           <select
-            className="border rounded p-2 w-full mb-6"
+            className="form-select"
             value={style}
             onChange={(e) => setStyle(e.target.value)}
           >
@@ -74,22 +85,27 @@ export default function Summarize() {
             <option value="funny">Funny 😂</option>
             <option value="short">Short ✂️</option>
           </select>
-
-          <button
-            onClick={handleSummarize}
-            className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700"
-          >
-            {loading ? "Summarizing..." : "Generate Summary"}
-          </button>
         </div>
 
-        {summary && (
-          <div className="bg-gray-100 p-6 rounded-lg mt-6">
-            <h2 className="text-2xl font-semibold mb-4">✨ Custom Summary:</h2>
-            <p className="text-gray-800">{summary}</p>
-          </div>
-        )}
-      </main>
+        <button
+          onClick={handleSummarize}
+          className="btn btn-primary w-100"
+          disabled={loading}
+        >
+          {loading ? "Summarizing..." : "Generate Summary"}
+        </button>
+      </div>
     </div>
+
+    {summary && (
+      <div className="card shadow-sm mt-5">
+        <div className="card-body">
+          <h2 className="h4 mb-3">✨ Custom Summary:</h2>
+          <p>{summary}</p>
+        </div>
+      </div>
+    )}
+  </main>
+</ProtectedRoute>
   )
 }

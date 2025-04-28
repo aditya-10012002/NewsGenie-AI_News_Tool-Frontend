@@ -48,8 +48,8 @@ export default function NewsCard({ _id, title, summary, url, isFavorited, handle
           <h5 className="card-title fw-bold">{title}</h5>
           <p className="card-text">{summary}</p>
           <div className="d-flex justify-content-between align-items-center">
-            <Link href={url} target="_blank" className="btn btn-primary">
-              Read Full Article →
+            <Link href={url} target="_blank" className="btn btn-primary me-2">
+              Read More...
             </Link>
             <button
               onClick={handleSaveFavorite}

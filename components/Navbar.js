@@ -1,47 +1,48 @@
-import Link from 'next/link'
-import { useEffect, useState } from 'react'
-import { useRouter } from 'next/router'
+// components/Navbar.js
+import Link from 'next/link';
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 
 export default function Navbar() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
-  const router = useRouter()
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
-    const token = localStorage.getItem("token")
-    setIsLoggedIn(!!token)
-  }, [])
+    setIsLoggedIn(!!localStorage.getItem("token"));
+  }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem("token")
-    router.push('/login')
-  }
+    localStorage.removeItem("token");
+    router.push('/login');
+  };
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
+    <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
       <div className="container">
-        <Link href="/" className="navbar-brand fw-bold fs-4">📰 NewsGenie</Link>
-        <div className="collapse navbar-collapse justify-content-end">
-          <ul className="navbar-nav">
+        <Link href="/" className="navbar-brand">📰 NewsGenie</Link>
+        <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
+          <span className="navbar-toggler-icon"></span>
+        </button>
+        <div className="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul className="navbar-nav ms-auto">
             {isLoggedIn ? (
               <>
-                <li className="nav-item"><Link href="/" className="nav-link">Today's News</Link></li>
-                <li className="nav-item"><Link href="/favorites" className="nav-link">Favorites</Link></li>
-                <li className="nav-item"><Link href="/trending" className="nav-link">Trending</Link></li>
-                <li className="nav-item"><Link href="/summarize" className="nav-link">Summarize</Link></li>
-                <li className="nav-item"><Link href="/profile" className="nav-link">Profile</Link></li>
-                <li className="nav-item">
-                  <button onClick={handleLogout} className="btn btn-danger ms-2">Logout</button>
-                </li>
+                <li className="nav-item"><Link className="nav-link" href="/">Home</Link></li>
+                <li className="nav-item"><Link className="nav-link" href="/favorites">Favorites</Link></li>
+                <li className="nav-item"><Link className="nav-link" href="/trending">Trending</Link></li>
+                <li className="nav-item"><Link className="nav-link" href="/summarize">Summarize</Link></li>
+                <li className="nav-item"><Link className="nav-link" href="/profile">Profile</Link></li>
+                <li className="nav-item"><button className="btn btn-outline-danger ms-2" onClick={handleLogout}>Logout</button></li>
               </>
             ) : (
               <>
-                <li className="nav-item"><Link href="/login" className="nav-link">Login</Link></li>
-                <li className="nav-item"><Link href="/signup" className="nav-link">Signup</Link></li>
+                <li className="nav-item"><Link className="nav-link" href="/login">Login</Link></li>
+                <li className="nav-item"><Link className="nav-link" href="/signup">Signup</Link></li>
               </>
             )}
           </ul>
         </div>
       </div>
     </nav>
-  )
+  );
 }
