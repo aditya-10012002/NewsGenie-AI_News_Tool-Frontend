@@ -52,7 +52,7 @@ export default function Summarize() {
   return (
     <ProtectedRoute>
   <Navbar />
-  <main className="container mt-4">
+  <main className="container mt-4 summary-box">
     <h1 className="mb-4">🎨 Custom Summarizer</h1>
     {loading && <Loader />}
 

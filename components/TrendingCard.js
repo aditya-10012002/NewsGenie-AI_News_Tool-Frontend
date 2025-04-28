@@ -2,15 +2,15 @@ import Link from 'next/link'
 
 export default function TrendingCard({ keyword, articles }) {
   return (
-    <div className="card mb-4 shadow-sm">
+    <div className="card trending-card">
       <div className="card-body">
-        <h5 className="card-title text-primary fw-bold">
-          🔥 {keyword} <span className="badge bg-info ms-2">{articles.length} Articles</span>
+        <h5 className="card-title trending-topic">
+          🔥 {keyword} <span className="badge badge-custom bg-info ms-2">{articles.length} Articles</span>
         </h5>
-        <ul className="list-group list-group-flush mt-3">
+        <ul className="trending-articles">
           {articles.map((article, idx) => (
-            <li key={idx} className="list-group-item">
-              <Link href={article.url} target="_blank" className="text-decoration-none">
+            <li key={idx} className="">
+              <Link href={article.url} target="_blank" className="trending-articles-link">
                 {article.title}
               </Link>
             </li>

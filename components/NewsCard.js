@@ -43,22 +43,20 @@ export default function NewsCard({ _id, title, summary, url, isFavorited, handle
     }
   
     return (
-      <div className="card mb-4 shadow-sm border-0 hover-shadow">
-        <div className="card-body">
-          <h5 className="card-title fw-bold">{title}</h5>
-          <p className="card-text">{summary}</p>
-          <div className="d-flex justify-content-between align-items-center">
-            <Link href={url} target="_blank" className="btn btn-primary me-2">
+      <div className="card">
+          <h5 className="card-title">{title}</h5>
+          <p className="card-text mt-2">{summary}</p>
+          <div className="d-flex justify-content-between align-items-center mt-2">
+            <Link href={url} target="_blank" rel="noopener noreferrer" className="read-article-btn">
               Read More...
             </Link>
             <button
               onClick={handleSaveFavorite}
-              className={`btn ${saved ? 'btn-success' : 'btn-outline-danger'} ms-2`}
+              className="save-btn"
             >
               {saved ? "❤️ Saved" : "🤍 Save"}
             </button>
           </div>
-        </div>
       </div>
     )
   }
